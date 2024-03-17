@@ -85,7 +85,7 @@ def generate_response(input_text):
 
 
 # Process PDFs and populate the index
-pdf_paths = ["/Users/rieder/Desktop/Module Descriptions.pdf"]
+pdf_paths = ["Module Descriptions.pdf"]
 all_text_chunks = []
 index_to_chunk_map = {}
 for pdf_path in pdf_paths:
