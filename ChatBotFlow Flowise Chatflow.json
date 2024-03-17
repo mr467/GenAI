@@ -1,0 +1,839 @@
+{
+  "nodes": [
+    {
+      "width": 300,
+      "height": 384,
+      "id": "queryEngine_0",
+      "position": {
+        "x": 1553.8408750730223,
+        "y": -830.2449321213941
+      },
+      "type": "customNode",
+      "data": {
+        "id": "queryEngine_0",
+        "label": "Query Engine",
+        "version": 2,
+        "name": "queryEngine",
+        "type": "QueryEngine",
+        "baseClasses": [
+          "QueryEngine",
+          "BaseQueryEngine"
+        ],
+        "tags": [
+          "LlamaIndex"
+        ],
+        "category": "Engine",
+        "description": "Simple query engine built to answer question over your data, without memory",
+        "inputParams": [
+          {
+            "label": "Return Source Documents",
+            "name": "returnSourceDocuments",
+            "type": "boolean",
+            "optional": true,
+            "id": "queryEngine_0-input-returnSourceDocuments-boolean"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Vector Store Retriever",
+            "name": "vectorStoreRetriever",
+            "type": "VectorIndexRetriever",
+            "id": "queryEngine_0-input-vectorStoreRetriever-VectorIndexRetriever"
+          },
+          {
+            "label": "Response Synthesizer",
+            "name": "responseSynthesizer",
+            "type": "ResponseSynthesizer",
+            "description": "ResponseSynthesizer is responsible for sending the query, nodes, and prompt templates to the LLM to generate a response. See <a target=\"_blank\" href=\"https://ts.llamaindex.ai/modules/low_level/response_synthesizer\">more</a>",
+            "optional": true,
+            "id": "queryEngine_0-input-responseSynthesizer-ResponseSynthesizer"
+          }
+        ],
+        "inputs": {
+          "vectorStoreRetriever": "{{simpleStoreLlamaIndex_0.data.instance}}",
+          "responseSynthesizer": "{{compactrefineLlamaIndex_0.data.instance}}",
+          "returnSourceDocuments": true
+        },
+        "outputAnchors": [
+          {
+            "id": "queryEngine_0-output-queryEngine-QueryEngine|BaseQueryEngine",
+            "name": "queryEngine",
+            "label": "QueryEngine",
+            "type": "QueryEngine | BaseQueryEngine"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1553.8408750730223,
+        "y": -830.2449321213941
+      },
+      "dragging": false
+    },
+    {
+      "width": 300,
+      "height": 1290,
+      "id": "compactrefineLlamaIndex_0",
+      "position": {
+        "x": 924.3978377778121,
+        "y": -282.8256348312255
+      },
+      "type": "customNode",
+      "data": {
+        "id": "compactrefineLlamaIndex_0",
+        "label": "Compact and Refine",
+        "version": 1,
+        "name": "compactrefineLlamaIndex",
+        "type": "CompactRefine",
+        "baseClasses": [
+          "CompactRefine",
+          "ResponseSynthesizer"
+        ],
+        "tags": [
+          "LlamaIndex"
+        ],
+        "category": "Response Synthesizer",
+        "description": "CompactRefine is a slight variation of Refine that first compacts the text chunks into the smallest possible number of chunks.",
+        "inputParams": [
+          {
+            "label": "Refine Prompt",
+            "name": "refinePrompt",
+            "type": "string",
+            "rows": 4,
+            "default": "The original query is as follows: {query}\nWe have provided an existing answer: {existingAnswer}\nWe have the opportunity to refine the existing answer (only if needed) with some more context below.\n------------\n{context}\n------------\nGiven the new context, refine the original answer to better answer the query. If the context isn't useful, return the original answer.\nRefined Answer:",
+            "warning": "Prompt can contains no variables, or up to 3 variables. Variables must be {existingAnswer}, {context} and {query}",
+            "optional": true,
+            "id": "compactrefineLlamaIndex_0-input-refinePrompt-string"
+          },
+          {
+            "label": "Text QA Prompt",
+            "name": "textQAPrompt",
+            "type": "string",
+            "rows": 4,
+            "default": "Context information is below.\n---------------------\n{context}\n---------------------\nGiven the context information and not prior knowledge, answer the query.\nQuery: {query}\nAnswer:",
+            "warning": "Prompt can contains no variables, or up to 2 variables. Variables must be {context} and {query}",
+            "optional": true,
+            "id": "compactrefineLlamaIndex_0-input-textQAPrompt-string"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "refinePrompt": "The original query is as follows: {query}\nWe have provided an existing answer: {existingAnswer}\nWe have the opportunity to refine the existing answer (only if needed) with some more context below.\n------------\n{context}\n------------\nGiven the new context, refine the original answer to better answer the query. If the context isn't useful, return the original answer.\nRefined Answer:",
+          "textQAPrompt": "Context information:\n<context>\n{context}\n</context>\nGiven the context information and not prior knowledge, answer the query.\nQuery: {query}"
+        },
+        "outputAnchors": [
+          {
+            "id": "compactrefineLlamaIndex_0-output-compactrefineLlamaIndex-CompactRefine|ResponseSynthesizer",
+            "name": "compactrefineLlamaIndex",
+            "label": "CompactRefine",
+            "type": "CompactRefine | ResponseSynthesizer"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "selected": false,
+      "positionAbsolute": {
+        "x": 924.3978377778121,
+        "y": -282.8256348312255
+      },
+      "dragging": false
+    },
+    {
+      "id": "chatOpenAI_LlamaIndex_0",
+      "position": {
+        "x": 377.0313410238626,
+        "y": -760.1905906181032
+      },
+      "type": "customNode",
+      "data": {
+        "id": "chatOpenAI_LlamaIndex_0",
+        "label": "ChatOpenAI",
+        "version": 1,
+        "name": "chatOpenAI_LlamaIndex",
+        "type": "ChatOpenAI",
+        "baseClasses": [
+          "ChatOpenAI",
+          "BaseChatModel_LlamaIndex",
+          "BaseLLM"
+        ],
+        "tags": [
+          "LlamaIndex"
+        ],
+        "category": "Chat Models",
+        "description": "Wrapper around OpenAI Chat LLM specific for LlamaIndex",
+        "inputParams": [
+          {
+            "label": "Connect Credential",
+            "name": "credential",
+            "type": "credential",
+            "credentialNames": [
+              "openAIApi"
+            ],
+            "id": "chatOpenAI_LlamaIndex_0-input-credential-credential"
+          },
+          {
+            "label": "Model Name",
+            "name": "modelName",
+            "type": "options",
+            "options": [
+              {
+                "label": "gpt-4",
+                "name": "gpt-4"
+              },
+              {
+                "label": "gpt-4-turbo-preview",
+                "name": "gpt-4-turbo-preview"
+              },
+              {
+                "label": "gpt-4-0125-preview",
+                "name": "gpt-4-0125-preview"
+              },
+              {
+                "label": "gpt-4-1106-preview",
+                "name": "gpt-4-1106-preview"
+              },
+              {
+                "label": "gpt-4-vision-preview",
+                "name": "gpt-4-vision-preview"
+              },
+              {
+                "label": "gpt-4-0613",
+                "name": "gpt-4-0613"
+              },
+              {
+                "label": "gpt-4-32k",
+                "name": "gpt-4-32k"
+              },
+              {
+                "label": "gpt-4-32k-0613",
+                "name": "gpt-4-32k-0613"
+              },
+              {
+                "label": "gpt-3.5-turbo",
+                "name": "gpt-3.5-turbo"
+              },
+              {
+                "label": "gpt-3.5-turbo-1106",
+                "name": "gpt-3.5-turbo-1106"
+              },
+              {
+                "label": "gpt-3.5-turbo-0613",
+                "name": "gpt-3.5-turbo-0613"
+              },
+              {
+                "label": "gpt-3.5-turbo-16k",
+                "name": "gpt-3.5-turbo-16k"
+              },
+              {
+                "label": "gpt-3.5-turbo-16k-0613",
+                "name": "gpt-3.5-turbo-16k-0613"
+              }
+            ],
+            "default": "gpt-3.5-turbo",
+            "optional": true,
+            "id": "chatOpenAI_LlamaIndex_0-input-modelName-options"
+          },
+          {
+            "label": "Temperature",
+            "name": "temperature",
+            "type": "number",
+            "step": 0.1,
+            "default": 0.9,
+            "optional": true,
+            "id": "chatOpenAI_LlamaIndex_0-input-temperature-number"
+          },
+          {
+            "label": "Max Tokens",
+            "name": "maxTokens",
+            "type": "number",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_LlamaIndex_0-input-maxTokens-number"
+          },
+          {
+            "label": "Top Probability",
+            "name": "topP",
+            "type": "number",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_LlamaIndex_0-input-topP-number"
+          },
+          {
+            "label": "Timeout",
+            "name": "timeout",
+            "type": "number",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_LlamaIndex_0-input-timeout-number"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "modelName": "gpt-3.5-turbo",
+          "temperature": "0.7",
+          "maxTokens": "",
+          "topP": "",
+          "timeout": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "chatOpenAI_LlamaIndex_0-output-chatOpenAI_LlamaIndex-ChatOpenAI|BaseChatModel_LlamaIndex|BaseLLM",
+            "name": "chatOpenAI_LlamaIndex",
+            "label": "ChatOpenAI",
+            "description": "Wrapper around OpenAI Chat LLM specific for LlamaIndex",
+            "type": "ChatOpenAI | BaseChatModel_LlamaIndex | BaseLLM"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 531,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 377.0313410238626,
+        "y": -760.1905906181032
+      },
+      "dragging": false
+    },
+    {
+      "id": "recursiveCharacterTextSplitter_0",
+      "position": {
+        "x": -25.030278606135795,
+        "y": -1335.9797099131295
+      },
+      "type": "customNode",
+      "data": {
+        "id": "recursiveCharacterTextSplitter_0",
+        "label": "Recursive Character Text Splitter",
+        "version": 2,
+        "name": "recursiveCharacterTextSplitter",
+        "type": "RecursiveCharacterTextSplitter",
+        "baseClasses": [
+          "RecursiveCharacterTextSplitter",
+          "TextSplitter",
+          "BaseDocumentTransformer",
+          "Runnable"
+        ],
+        "category": "Text Splitters",
+        "description": "Split documents recursively by different characters - starting with \"\\n\\n\", then \"\\n\", then \" \"",
+        "inputParams": [
+          {
+            "label": "Chunk Size",
+            "name": "chunkSize",
+            "type": "number",
+            "default": 1000,
+            "optional": true,
+            "id": "recursiveCharacterTextSplitter_0-input-chunkSize-number"
+          },
+          {
+            "label": "Chunk Overlap",
+            "name": "chunkOverlap",
+            "type": "number",
+            "optional": true,
+            "id": "recursiveCharacterTextSplitter_0-input-chunkOverlap-number"
+          },
+          {
+            "label": "Custom Separators",
+            "name": "separators",
+            "type": "string",
+            "rows": 4,
+            "description": "Array of custom separators to determine when to split the text, will override the default separators",
+            "placeholder": "[\"|\", \"##\", \">\", \"-\"]",
+            "additionalParams": true,
+            "optional": true,
+            "id": "recursiveCharacterTextSplitter_0-input-separators-string"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "chunkSize": "500",
+          "chunkOverlap": "",
+          "separators": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "recursiveCharacterTextSplitter_0-output-recursiveCharacterTextSplitter-RecursiveCharacterTextSplitter|TextSplitter|BaseDocumentTransformer|Runnable",
+            "name": "recursiveCharacterTextSplitter",
+            "label": "RecursiveCharacterTextSplitter",
+            "description": "Split documents recursively by different characters - starting with \"\\n\\n\", then \"\\n\", then \" \"",
+            "type": "RecursiveCharacterTextSplitter | TextSplitter | BaseDocumentTransformer | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 430,
+      "selected": false,
+      "positionAbsolute": {
+        "x": -25.030278606135795,
+        "y": -1335.9797099131295
+      },
+      "dragging": false
+    },
+    {
+      "id": "pdfFile_0",
+      "position": {
+        "x": 807.2921224825377,
+        "y": -1441.9293488122457
+      },
+      "type": "customNode",
+      "data": {
+        "id": "pdfFile_0",
+        "label": "Pdf File",
+        "version": 1,
+        "name": "pdfFile",
+        "type": "Document",
+        "baseClasses": [
+          "Document"
+        ],
+        "category": "Document Loaders",
+        "description": "Load data from PDF files",
+        "inputParams": [
+          {
+            "label": "Pdf File",
+            "name": "pdfFile",
+            "type": "file",
+            "fileType": ".pdf",
+            "id": "pdfFile_0-input-pdfFile-file"
+          },
+          {
+            "label": "Usage",
+            "name": "usage",
+            "type": "options",
+            "options": [
+              {
+                "label": "One document per page",
+                "name": "perPage"
+              },
+              {
+                "label": "One document per file",
+                "name": "perFile"
+              }
+            ],
+            "default": "perPage",
+            "id": "pdfFile_0-input-usage-options"
+          },
+          {
+            "label": "Use Legacy Build",
+            "name": "legacyBuild",
+            "type": "boolean",
+            "optional": true,
+            "additionalParams": true,
+            "id": "pdfFile_0-input-legacyBuild-boolean"
+          },
+          {
+            "label": "Metadata",
+            "name": "metadata",
+            "type": "json",
+            "optional": true,
+            "additionalParams": true,
+            "id": "pdfFile_0-input-metadata-json"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Text Splitter",
+            "name": "textSplitter",
+            "type": "TextSplitter",
+            "optional": true,
+            "id": "pdfFile_0-input-textSplitter-TextSplitter"
+          }
+        ],
+        "inputs": {
+          "textSplitter": "{{recursiveCharacterTextSplitter_0.data.instance}}",
+          "usage": "perPage",
+          "legacyBuild": false,
+          "metadata": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "pdfFile_0-output-pdfFile-Document",
+            "name": "pdfFile",
+            "label": "Document",
+            "description": "Load data from PDF files",
+            "type": "Document"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 509,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 807.2921224825377,
+        "y": -1441.9293488122457
+      },
+      "dragging": false
+    },
+    {
+      "id": "simpleStoreLlamaIndex_0",
+      "position": {
+        "x": 884.2701047906496,
+        "y": -872.1394730193645
+      },
+      "type": "customNode",
+      "data": {
+        "id": "simpleStoreLlamaIndex_0",
+        "label": "SimpleStore",
+        "version": 1,
+        "name": "simpleStoreLlamaIndex",
+        "type": "SimpleVectorStore",
+        "baseClasses": [
+          "SimpleVectorStore",
+          "VectorIndexRetriever"
+        ],
+        "tags": [
+          "LlamaIndex"
+        ],
+        "category": "Vector Stores",
+        "description": "Upsert embedded data to local path and perform similarity search",
+        "inputParams": [
+          {
+            "label": "Base Path to store",
+            "name": "basePath",
+            "description": "Path to store persist embeddings indexes with persistence. If not specified, default to same path where database is stored",
+            "type": "string",
+            "optional": true,
+            "id": "simpleStoreLlamaIndex_0-input-basePath-string"
+          },
+          {
+            "label": "Top K",
+            "name": "topK",
+            "description": "Number of top results to fetch. Default to 4",
+            "placeholder": "4",
+            "type": "number",
+            "optional": true,
+            "id": "simpleStoreLlamaIndex_0-input-topK-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Document",
+            "name": "document",
+            "type": "Document",
+            "list": true,
+            "optional": true,
+            "id": "simpleStoreLlamaIndex_0-input-document-Document"
+          },
+          {
+            "label": "Chat Model",
+            "name": "model",
+            "type": "BaseChatModel_LlamaIndex",
+            "id": "simpleStoreLlamaIndex_0-input-model-BaseChatModel_LlamaIndex"
+          },
+          {
+            "label": "Embeddings",
+            "name": "embeddings",
+            "type": "BaseEmbedding_LlamaIndex",
+            "id": "simpleStoreLlamaIndex_0-input-embeddings-BaseEmbedding_LlamaIndex"
+          }
+        ],
+        "inputs": {
+          "document": [
+            "{{pdfFile_0.data.instance}}"
+          ],
+          "model": "{{chatOpenAI_LlamaIndex_0.data.instance}}",
+          "embeddings": "{{openAIEmbedding_LlamaIndex_0.data.instance}}",
+          "basePath": "",
+          "topK": ""
+        },
+        "outputAnchors": [
+          {
+            "name": "output",
+            "label": "Output",
+            "type": "options",
+            "description": "",
+            "options": [
+              {
+                "id": "simpleStoreLlamaIndex_0-output-retriever-SimpleVectorStore|VectorIndexRetriever",
+                "name": "retriever",
+                "label": "SimpleStore Retriever",
+                "description": "",
+                "type": "SimpleVectorStore | VectorIndexRetriever"
+              },
+              {
+                "id": "simpleStoreLlamaIndex_0-output-vectorStore-SimpleVectorStore|VectorStoreIndex",
+                "name": "vectorStore",
+                "label": "SimpleStore Vector Store Index",
+                "description": "",
+                "type": "SimpleVectorStore | VectorStoreIndex"
+              }
+            ],
+            "default": "retriever"
+          }
+        ],
+        "outputs": {
+          "output": "retriever"
+        },
+        "selected": false
+      },
+      "width": 300,
+      "height": 562,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 884.2701047906496,
+        "y": -872.1394730193645
+      },
+      "dragging": false
+    },
+    {
+      "id": "openAIEmbedding_LlamaIndex_0",
+      "position": {
+        "x": 376.9072931112423,
+        "y": -182.75851795424688
+      },
+      "type": "customNode",
+      "data": {
+        "id": "openAIEmbedding_LlamaIndex_0",
+        "label": "OpenAI Embedding",
+        "version": 1,
+        "name": "openAIEmbedding_LlamaIndex",
+        "type": "OpenAIEmbedding",
+        "baseClasses": [
+          "OpenAIEmbedding",
+          "BaseEmbedding_LlamaIndex",
+          "BaseEmbedding"
+        ],
+        "tags": [
+          "LlamaIndex"
+        ],
+        "category": "Embeddings",
+        "description": "OpenAI Embedding specific for LlamaIndex",
+        "inputParams": [
+          {
+            "label": "Connect Credential",
+            "name": "credential",
+            "type": "credential",
+            "credentialNames": [
+              "openAIApi"
+            ],
+            "id": "openAIEmbedding_LlamaIndex_0-input-credential-credential"
+          },
+          {
+            "label": "Model Name",
+            "name": "modelName",
+            "type": "options",
+            "options": [
+              {
+                "label": "text-embedding-3-large",
+                "name": "text-embedding-3-large"
+              },
+              {
+                "label": "text-embedding-3-small",
+                "name": "text-embedding-3-small"
+              },
+              {
+                "label": "text-embedding-ada-002",
+                "name": "text-embedding-ada-002"
+              }
+            ],
+            "default": "text-embedding-ada-002",
+            "optional": true,
+            "id": "openAIEmbedding_LlamaIndex_0-input-modelName-options"
+          },
+          {
+            "label": "Timeout",
+            "name": "timeout",
+            "type": "number",
+            "optional": true,
+            "additionalParams": true,
+            "id": "openAIEmbedding_LlamaIndex_0-input-timeout-number"
+          },
+          {
+            "label": "BasePath",
+            "name": "basepath",
+            "type": "string",
+            "optional": true,
+            "additionalParams": true,
+            "id": "openAIEmbedding_LlamaIndex_0-input-basepath-string"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "modelName": "text-embedding-ada-002",
+          "timeout": "",
+          "basepath": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "openAIEmbedding_LlamaIndex_0-output-openAIEmbedding_LlamaIndex-OpenAIEmbedding|BaseEmbedding_LlamaIndex|BaseEmbedding",
+            "name": "openAIEmbedding_LlamaIndex",
+            "label": "OpenAIEmbedding",
+            "description": "OpenAI Embedding specific for LlamaIndex",
+            "type": "OpenAIEmbedding | BaseEmbedding_LlamaIndex | BaseEmbedding"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 432,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 376.9072931112423,
+        "y": -182.75851795424688
+      }
+    },
+    {
+      "id": "faiss_0",
+      "position": {
+        "x": 1213.2023853318854,
+        "y": -1390.4395490676427
+      },
+      "type": "customNode",
+      "data": {
+        "id": "faiss_0",
+        "label": "Faiss",
+        "version": 1,
+        "name": "faiss",
+        "type": "Faiss",
+        "baseClasses": [
+          "Faiss",
+          "VectorStoreRetriever",
+          "BaseRetriever"
+        ],
+        "category": "Vector Stores",
+        "description": "Upsert embedded data and perform similarity search upon query using Faiss library from Meta",
+        "inputParams": [
+          {
+            "label": "Base Path to load",
+            "name": "basePath",
+            "description": "Path to load faiss.index file",
+            "placeholder": "C:\\Users\\User\\Desktop",
+            "type": "string",
+            "id": "faiss_0-input-basePath-string"
+          },
+          {
+            "label": "Top K",
+            "name": "topK",
+            "description": "Number of top results to fetch. Default to 4",
+            "placeholder": "4",
+            "type": "number",
+            "additionalParams": true,
+            "optional": true,
+            "id": "faiss_0-input-topK-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Document",
+            "name": "document",
+            "type": "Document",
+            "list": true,
+            "optional": true,
+            "id": "faiss_0-input-document-Document"
+          },
+          {
+            "label": "Embeddings",
+            "name": "embeddings",
+            "type": "Embeddings",
+            "id": "faiss_0-input-embeddings-Embeddings"
+          }
+        ],
+        "inputs": {
+          "document": "",
+          "embeddings": "",
+          "basePath": "",
+          "topK": ""
+        },
+        "outputAnchors": [
+          {
+            "name": "output",
+            "label": "Output",
+            "type": "options",
+            "description": "",
+            "options": [
+              {
+                "id": "faiss_0-output-retriever-Faiss|VectorStoreRetriever|BaseRetriever",
+                "name": "retriever",
+                "label": "Faiss Retriever",
+                "description": "",
+                "type": "Faiss | VectorStoreRetriever | BaseRetriever"
+              },
+              {
+                "id": "faiss_0-output-vectorStore-Faiss|SaveableVectorStore|VectorStore",
+                "name": "vectorStore",
+                "label": "Faiss Vector Store",
+                "description": "",
+                "type": "Faiss | SaveableVectorStore | VectorStore"
+              }
+            ],
+            "default": "retriever"
+          }
+        ],
+        "outputs": {
+          "output": "retriever"
+        },
+        "selected": false
+      },
+      "width": 300,
+      "height": 459,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1213.2023853318854,
+        "y": -1390.4395490676427
+      },
+      "dragging": false
+    }
+  ],
+  "edges": [
+    {
+      "source": "recursiveCharacterTextSplitter_0",
+      "sourceHandle": "recursiveCharacterTextSplitter_0-output-recursiveCharacterTextSplitter-RecursiveCharacterTextSplitter|TextSplitter|BaseDocumentTransformer|Runnable",
+      "target": "pdfFile_0",
+      "targetHandle": "pdfFile_0-input-textSplitter-TextSplitter",
+      "type": "buttonedge",
+      "id": "recursiveCharacterTextSplitter_0-recursiveCharacterTextSplitter_0-output-recursiveCharacterTextSplitter-RecursiveCharacterTextSplitter|TextSplitter|BaseDocumentTransformer|Runnable-pdfFile_0-pdfFile_0-input-textSplitter-TextSplitter"
+    },
+    {
+      "source": "pdfFile_0",
+      "sourceHandle": "pdfFile_0-output-pdfFile-Document",
+      "target": "simpleStoreLlamaIndex_0",
+      "targetHandle": "simpleStoreLlamaIndex_0-input-document-Document",
+      "type": "buttonedge",
+      "id": "pdfFile_0-pdfFile_0-output-pdfFile-Document-simpleStoreLlamaIndex_0-simpleStoreLlamaIndex_0-input-document-Document"
+    },
+    {
+      "source": "chatOpenAI_LlamaIndex_0",
+      "sourceHandle": "chatOpenAI_LlamaIndex_0-output-chatOpenAI_LlamaIndex-ChatOpenAI|BaseChatModel_LlamaIndex|BaseLLM",
+      "target": "simpleStoreLlamaIndex_0",
+      "targetHandle": "simpleStoreLlamaIndex_0-input-model-BaseChatModel_LlamaIndex",
+      "type": "buttonedge",
+      "id": "chatOpenAI_LlamaIndex_0-chatOpenAI_LlamaIndex_0-output-chatOpenAI_LlamaIndex-ChatOpenAI|BaseChatModel_LlamaIndex|BaseLLM-simpleStoreLlamaIndex_0-simpleStoreLlamaIndex_0-input-model-BaseChatModel_LlamaIndex"
+    },
+    {
+      "source": "simpleStoreLlamaIndex_0",
+      "sourceHandle": "simpleStoreLlamaIndex_0-output-retriever-SimpleVectorStore|VectorIndexRetriever",
+      "target": "queryEngine_0",
+      "targetHandle": "queryEngine_0-input-vectorStoreRetriever-VectorIndexRetriever",
+      "type": "buttonedge",
+      "id": "simpleStoreLlamaIndex_0-simpleStoreLlamaIndex_0-output-retriever-SimpleVectorStore|VectorIndexRetriever-queryEngine_0-queryEngine_0-input-vectorStoreRetriever-VectorIndexRetriever"
+    },
+    {
+      "source": "compactrefineLlamaIndex_0",
+      "sourceHandle": "compactrefineLlamaIndex_0-output-compactrefineLlamaIndex-CompactRefine|ResponseSynthesizer",
+      "target": "queryEngine_0",
+      "targetHandle": "queryEngine_0-input-responseSynthesizer-ResponseSynthesizer",
+      "type": "buttonedge",
+      "id": "compactrefineLlamaIndex_0-compactrefineLlamaIndex_0-output-compactrefineLlamaIndex-CompactRefine|ResponseSynthesizer-queryEngine_0-queryEngine_0-input-responseSynthesizer-ResponseSynthesizer"
+    },
+    {
+      "source": "openAIEmbedding_LlamaIndex_0",
+      "sourceHandle": "openAIEmbedding_LlamaIndex_0-output-openAIEmbedding_LlamaIndex-OpenAIEmbedding|BaseEmbedding_LlamaIndex|BaseEmbedding",
+      "target": "simpleStoreLlamaIndex_0",
+      "targetHandle": "simpleStoreLlamaIndex_0-input-embeddings-BaseEmbedding_LlamaIndex",
+      "type": "buttonedge",
+      "id": "openAIEmbedding_LlamaIndex_0-openAIEmbedding_LlamaIndex_0-output-openAIEmbedding_LlamaIndex-OpenAIEmbedding|BaseEmbedding_LlamaIndex|BaseEmbedding-simpleStoreLlamaIndex_0-simpleStoreLlamaIndex_0-input-embeddings-BaseEmbedding_LlamaIndex"
+    }
+  ]
+}
