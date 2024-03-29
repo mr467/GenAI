@@ -7,8 +7,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.spatial.distance import cdist
 from openai import OpenAI
 
+
 # Option 1: Set API key as environment variable (recommended)
-os.environ["OPENAI_API_KEY"] = "OPEN_API_KEY"  # Replace with your actual key
+os.environ["OPENAI_API_KEY"] = "my key"  # Replace with your actual key
 client = OpenAI()
 
 
@@ -130,7 +131,7 @@ def generate_response_with_chatgpt(input_text):
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",  # Adjust based on the available models
         messages=[{"role": "system", "content": contextual_query}],
-        temperature=0.7,
+        temperature=0.8,
         max_tokens=500,  # Adjust based on needs
         top_p=1.0,
         frequency_penalty=0.0,
